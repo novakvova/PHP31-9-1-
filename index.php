@@ -8,9 +8,39 @@
     <?php include "_styles.php"; ?>
 </head>
 <body>
-<?php include "_navbar.php"; ?>
+<?php include "_navbar.php";
+include_once "con_db.php";
+?>
+
 <div class="container">
     <h1>Hello PHP</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Email</th>
+            <th scope="col">IsLock</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        $sth = $dbh->prepare("SELECT Id, Email, Phone FROM `tbl_users`");
+        $sth->execute();
+
+        while($result = $sth->fetch(PDO::FETCH_ASSOC))
+        {
+            echo '
+        <tr>
+            <th scope="row">'.$result["Id"].'</th>
+            <td>'.$result["Email"].'</td>
+            <td>'.$result["Phone"].'</td>
+        </tr>
+        ';
+        }
+        ?>
+        </tbody>
+    </table>
     <?php
     echo "<h2>Hello Peter</h2>";
     $a = 5;
