@@ -32,10 +32,18 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
     }
     if (count($errors) == 0) {
         include_once "lib/image_compress.php";
+        include_once "con_db.php";
         $uploaddir = $_SERVER['DOCUMENT_ROOT'].'/uploads/';
         $file_name= uniqid('300_').'.jpg';
         $file_save_path=$uploaddir.$file_name;
         my_image_resize(600,400,$file_save_path,'image');
+
+        $urlPath="/uploads/".$file_name;
+        $sql = "INSERT INTO tbl_users (Email, Password, Image, Phone) VALUES (?,?,?,?)";
+        $stmt= $dbh->prepare($sql);
+        $stmt->execute([$email, $password, $urlPath, $phone]);
+        header("Location: /");
+        exit;
         // if (move_uploaded_file($_FILES['image']['tmp_name'], $file_save_path)) {
         //     echo "Файл корректен и был успешно загружен.\n";
         // } else {
