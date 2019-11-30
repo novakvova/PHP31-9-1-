@@ -31,14 +31,18 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
         $errors['confirm_password']="Паролі не співпадають";
     }
     if (count($errors) == 0) {
+        include_once "lib/image_compress.php";
         $uploaddir = $_SERVER['DOCUMENT_ROOT'].'/uploads/';
         $file_name= uniqid('300_').'.jpg';
         $file_save_path=$uploaddir.$file_name;
-        if (move_uploaded_file($_FILES['image']['tmp_name'], $file_save_path)) {
-            echo "Файл корректен и был успешно загружен.\n";
-        } else {
-            echo "Возможная атака с помощью файловой загрузки!\n";
-        }
+        my_image_resize(600,400,$file_save_path,'image');
+        // if (move_uploaded_file($_FILES['image']['tmp_name'], $file_save_path)) {
+        //     echo "Файл корректен и был успешно загружен.\n";
+        // } else {
+        //     echo "Возможная атака с помощью файловой загрузки!\n";
+        // }
+
+
     }
 }
 ?>

@@ -1,14 +1,15 @@
 <?php
 function create_input($name, $label, $type, $errors)
 {
+    $isInvalid='';
+    $value='';
+    $isError=false;
     if($_SERVER["REQUEST_METHOD"]=="POST")
     {
-        $value='';
         $isValue=isset($_POST[$name]) and !empty($_POST[$name]);
         if($isValue)
             $value=$_POST[$name];
         
-        $isInvalid='';
         $isError=isset($errors[$name]) and !empty($errors[$name]);
         $isInvalid=$isError ? 'is-invalid' : '';
     }
