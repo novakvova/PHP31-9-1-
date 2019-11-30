@@ -8,6 +8,38 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
     else
         $errors['email']="Поле є обов'язковим";
     
+    $password='';
+    if(isset($_POST['password']) and !empty($_POST['password']))
+        $password=$_POST['password'];
+    else
+        $errors['password']="Поле є обов'язковим";
+
+    $phone='';
+    if(isset($_POST['phone']) and !empty($_POST['phone']))
+        $phone=$_POST['phone'];
+    else
+        $errors['phone']="Поле є обов'язковим";
+
+    $confirm_password='';
+    if(isset($_POST['confirm_password']) and !empty($_POST['confirm_password']))
+        $confirm_password=$_POST['confirm_password'];
+    else
+        $errors['confirm_password']="Поле є обов'язковим";
+
+    if($password!= $confirm_password)
+    {
+        $errors['confirm_password']="Паролі не співпадають";
+    }
+    if (count($errors) == 0) {
+        $uploaddir = $_SERVER['DOCUMENT_ROOT'].'/uploads/';
+        $file_name= uniqid('300_').'.jpg';
+        $file_save_path=$uploaddir.$file_name;
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $file_save_path)) {
+            echo "Файл корректен и был успешно загружен.\n";
+        } else {
+            echo "Возможная атака с помощью файловой загрузки!\n";
+        }
+    }
 }
 ?>
 
@@ -38,7 +70,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
                     ';
                 }
             ?>
-            <form method="post">
+            <form method="post" id="form_register" enctype="multipart/form-data">
 
                 <?php create_input("email", "Електронна пошта", "email", $errors); ?>
 
@@ -50,7 +82,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
 
                 <?php create_input("image", "Фото", "file", $errors); ?>
 
-
+                <img id="prev" width="300"/>
                 <div class="form-group">
                     <input type="submit" class="btn btn-success" value="Реєструватися"/>
                 </div>
@@ -66,5 +98,24 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
 <?php
 include "_scripts.php";
 ?>
+<script>
+    $(function() {
+        $('#form_register #image').on('input', function()
+        {
+            readURL(this);
+        });
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    //$(this).parent().append("<img src='"+e.target.result+"'/>");
+                    $('#prev').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    });
+
+</script>
 </body>
 </html>

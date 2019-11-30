@@ -19,16 +19,18 @@ function create_input($name, $label, $type, $errors)
                            class="form-control $isInvalid"
                            id="$name"
                            name="$name"
-                           value="$value"/>
-                
-END;
+                           value="$value"/>         
+    END;
 
-if($isError)
-print <<<ERROR
-    <div class="invalid-feedback d-block">
-        $errors[$name]
-    </div>
-ERROR;
+    if($isError)
+        print <<<ERROR
+            <div class="invalid-feedback d-block">
+                $errors[$name]
+            </div>
+        ERROR;
+
     echo '</div>';
 }
+
+
 ?>
